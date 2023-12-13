@@ -7,14 +7,16 @@ set(TARGET_LIBSOCI soci_connection)
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(HEADERS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+message("HEADERS_DIR for library: ${HEADERS_DIR}")
 
 set(SOURCES ${SOURCE_DIR}/connection.cpp)
 
 list(APPEND CMAKE_MODULE_PATH $ENV{HOME}/cmake_modules)
+message("CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
 
 add_library(${TARGET_LIBSOCI} ${SOURCES})
 
-find_package(MySql)
+find_package(MySQL)
 if(MYSQL_FOUND)
 	message("MySql found")
 	message("MYSQL_INCLUDE_DIR = ${MYSQL_INCLUDE_DIR}")
@@ -32,24 +34,24 @@ else()
 	endif()
 endif()
 
-find_package(Soci)
-if(SOCI_FOUND)
-	target_include_directories(${TARGET_LIBSOCI} PRIVATE ${SOCI_INCLUDE_DIR})
-	target_link_libraries(${TARGET_LIBSOCI} ${SOCI_LIBRARY})
-	target_link_libraries(${TARGET_LIBSOCI} ${SOCI_mysql_PLUGIN})
-	target_link_libraries(${TARGET_LIBSOCI} ${SOCI_postgresql_PLUGIN})
-else()
-	message("Soci not found")
-endif()
-
-message("Ищем Boost")
-find_package(Boost COMPONENTS program_options)
-if (Boost_FOUND)
-	message("Найден Boost")
-	target_include_directories(${TARGET_LIBSOCI} PRIVATE ${Boost_INCLUDE_DIR})
-	target_link_libraries(${TARGET_LIBSOCI} ${Boost_LIBRARIES})
-endif()
-
+#find_package(Soci)
+#if(SOCI_FOUND)
+#	target_include_directories(${TARGET_LIBSOCI} PRIVATE ${SOCI_INCLUDE_DIR})
+#	target_link_libraries(${TARGET_LIBSOCI} ${SOCI_LIBRARY})
+#	target_link_libraries(${TARGET_LIBSOCI} ${SOCI_mysql_PLUGIN})
+#	target_link_libraries(${TARGET_LIBSOCI} ${SOCI_postgresql_PLUGIN})
+#else()
+#	message("Soci not found")
+#endif()
+#
+#message("Ищем Boost")
+#find_package(Boost COMPONENTS program_options)
+#if (Boost_FOUND)
+#	message("Найден Boost")
+#	target_include_directories(${TARGET_LIBSOCI} PRIVATE ${Boost_INCLUDE_DIR})
+#	target_link_libraries(${TARGET_LIBSOCI} ${Boost_LIBRARIES})
+#endif()
+#
 target_include_directories(${TARGET_LIBSOCI} PRIVATE ${HEADERS_DIR})
 
 set_target_properties(
